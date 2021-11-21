@@ -1,3 +1,5 @@
+use std::fs::File;
+use std::io::{BufReader, Read};
 use std::path::PathBuf;
 
 use serde::{Deserialize, Serialize};
@@ -6,7 +8,7 @@ use crate::error::{Error, Result};
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Config {
-    repository: PathBuf,
+    pub repository: PathBuf,
 }
 
 impl Config {
@@ -14,16 +16,21 @@ impl Config {
         Config { repository }
     }
 
-    // pub fn load() -> Result<Self> {
-    //     let filename = PathBuf::from("migrate.toml");
-    //     let mut file = File::open(filename)?;
-    //
-    //     let mut content = Vec::with_capacity(128);
-    //     file.read_to_end(&mut content)?;
-    //
-    //     let config = toml::from_slice::<Config>(&content)?;
-    //     Ok(config)
-    // }
+    pub fn load_or_default() -> Self {
+        Self::load().unwrap_or_default()
+    }
+
+    fn load() -> Result<Self> {
+        let filename = PathBuf::from("migrate.toml");
+        let file = File::open(filename)?;
+        let mut reader = BufReader::new(file);
+
+        let mut content = String::with_capacity(128);
+        reader.read_to_string(&mut content)?;
+
+        let config = toml::from_str::<Config>(&content)?;
+        Ok(config)
+    }
 
     pub fn save(&self) -> Result<()> {
         let content = toml::to_string_pretty(self).unwrap();

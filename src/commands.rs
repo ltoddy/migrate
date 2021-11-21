@@ -1,23 +1,36 @@
-use std::fs;
+use std::fs::{self, File};
+
+use chrono::Local;
 
 use crate::config::Config;
 use crate::error::{Error, Result};
 use crate::options::{CreateOption, InitOption};
+use crate::repository::Repository;
 
 pub fn exec_init(opt: InitOption) -> Result<()> {
-    let directory = opt.repository;
+    let InitOption { repository: directory } = opt;
 
     match directory.is_dir() {
         true => return Err(Error::PathAlreadyExist(directory)),
         false => fs::create_dir_all(&directory)?,
     }
+    Repository::create(directory.join("manage.db"));
 
-    let config = Config::new(directory);
-    config.save()?;
+    Config::new(directory).save()?;
 
     Ok(())
 }
 
-pub fn exec_create(_opt: CreateOption) -> Result<()> {
+pub fn exec_create(opt: CreateOption) -> Result<()> {
+    let CreateOption { message } = opt;
+
+    let config = Config::load_or_default();
+
+    let now = Local::now();
+    let filename =
+        format!("{}{}.sql", now.format("%Y%m%d%H%M%S"), message.to_lowercase().replace(" ", "_"));
+    let path = config.repository.join(filename);
+    File::create(path)?;
+
     Ok(())
 }

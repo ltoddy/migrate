@@ -7,6 +7,7 @@ pub mod commands;
 pub mod config;
 pub mod error;
 pub mod options;
+pub mod repository;
 
 pub fn main() {
     if let Err(e) = run() {
