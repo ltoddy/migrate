@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 chrono = "0.4"
+mysql = "21.0"
 rusqlite = "0.26"
 serde = { version = "1.0", features = ["derive"] }
 structopt = "0.3"

@@ -2,13 +2,13 @@ use std::fs::{self, File};
 
 use chrono::Local;
 
-use crate::config::Config;
+use crate::config::{Config, MySQLConfig};
 use crate::error::{Error, Result};
 use crate::options::{CreateOption, InitOption};
 use crate::repository::Repository;
 
 pub fn exec_init(opt: InitOption) -> Result<()> {
-    let InitOption { repository: directory } = opt;
+    let directory = opt.repository;
 
     match directory.is_dir() {
         true => return Err(Error::PathAlreadyExist(directory)),
@@ -16,7 +16,9 @@ pub fn exec_init(opt: InitOption) -> Result<()> {
     }
     Repository::create(directory.join("manage.db"));
 
-    Config::new(directory).save()?;
+    let mysql =
+        MySQLConfig::new(opt.mysql_host, opt.mysql_port, opt.mysql_username, opt.mysql_password);
+    Config::new(directory, mysql).save()?;
 
     Ok(())
 }

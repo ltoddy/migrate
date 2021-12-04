@@ -7,13 +7,39 @@ use serde::{Deserialize, Serialize};
 use crate::error::{Error, Result};
 
 #[derive(Debug, Deserialize, Serialize)]
+pub struct MySQLConfig {
+    host: String,
+    port: u16,
+    username: String,
+    password: String,
+}
+
+impl MySQLConfig {
+    pub fn new(host: String, port: u16, username: String, password: String) -> Self {
+        MySQLConfig { host, port, username, password }
+    }
+}
+
+impl Default for MySQLConfig {
+    fn default() -> Self {
+        MySQLConfig {
+            host: "127.0.0.1".to_string(),
+            port: 3306,
+            username: "root".to_string(),
+            password: "".to_string(),
+        }
+    }
+}
+
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Config {
     pub repository: PathBuf,
+    pub mysql: MySQLConfig,
 }
 
 impl Config {
-    pub fn new(repository: PathBuf) -> Self {
-        Config { repository }
+    pub fn new(repository: PathBuf, mysql: MySQLConfig) -> Self {
+        Config { repository, mysql }
     }
 
     pub fn load_or_default() -> Self {
@@ -45,6 +71,6 @@ impl Config {
 
 impl Default for Config {
     fn default() -> Self {
-        Config { repository: PathBuf::from("migrations") }
+        Config { repository: PathBuf::from("migrations"), mysql: MySQLConfig::default() }
     }
 }
