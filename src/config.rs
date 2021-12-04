@@ -12,11 +12,23 @@ pub struct MySQLConfig {
     port: u16,
     username: String,
     password: String,
+    db: String,
 }
 
 impl MySQLConfig {
-    pub fn new(host: String, port: u16, username: String, password: String) -> Self {
-        MySQLConfig { host, port, username, password }
+    pub fn new(host: String, port: u16, username: String, password: String, db: String) -> Self {
+        MySQLConfig { host, port, username, password, db }
+    }
+
+    pub fn get_url(&self) -> String {
+        format!(
+            "mysql://{username}:{password}@{host}:{port}/{db}",
+            username = self.username,
+            password = self.password,
+            host = self.host,
+            port = self.port,
+            db = self.db,
+        )
     }
 }
 
@@ -27,6 +39,7 @@ impl Default for MySQLConfig {
             port: 3306,
             username: "root".to_string(),
             password: "".to_string(),
+            db: "".to_string(),
         }
     }
 }

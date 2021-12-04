@@ -20,6 +20,7 @@ pub fn run() -> Result<()> {
     match opts {
         Options::Init(opt) => commands::exec_init(opt)?,
         Options::Create(opt) => commands::exec_create(opt)?,
+        Options::Exec(opt) => commands::exec_exec(opt)?,
     }
     Ok(())
 }

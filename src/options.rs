@@ -8,6 +8,8 @@ pub enum Options {
     Init(InitOption),
     #[structopt(name = "create")]
     Create(CreateOption),
+    #[structopt(name = "exec")]
+    Exec(ExecOption),
 }
 
 #[derive(StructOpt, Debug)]
@@ -23,10 +25,20 @@ pub struct InitOption {
     pub mysql_username: String,
     #[structopt(long = "mysql-password", default_value = "")]
     pub mysql_password: String,
+    #[structopt(long = "mysql-db", default_value = "")]
+    pub mysql_db: String,
 }
 
 #[derive(StructOpt, Debug)]
 pub struct CreateOption {
     #[structopt(short = "m", long = "message", default_value = "")]
     pub message: String,
+}
+
+#[derive(StructOpt, Debug)]
+pub struct ExecOption {
+    #[structopt(short = "f", long = "force")]
+    pub force: bool,
+    #[structopt(short = "i", long = "ignore")]
+    pub ignore: bool,
 }
