@@ -19,6 +19,6 @@ impl Repository {
             "#,
             [],
         )
-        .unwrap();
+        .expect("initialize migration manager failed");
     }
 }

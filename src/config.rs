@@ -77,6 +77,7 @@ impl Config {
         if filename.is_file() {
             return Err(Error::PathAlreadyExist(filename));
         }
+        log::info!("saving migrate config");
         std::fs::write(filename, content)?;
         Ok(())
     }
