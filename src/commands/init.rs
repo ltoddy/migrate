@@ -12,7 +12,7 @@ pub fn init(opt: InitOption) -> Result<()> {
         log::info!("create {}", directory.display());
     }
 
-    Repository::create(directory.join("manage.db"));
+    Repository::initialize(directory.join("manage.db"));
 
     let mysql = MySQLConfig::new(
         opt.mysql_host,

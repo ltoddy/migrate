@@ -5,8 +5,8 @@ use rusqlite::Connection;
 pub struct Repository;
 
 impl Repository {
-    pub fn create<P: AsRef<Path>>(filename: P) {
-        let conn = Connection::open(filename.as_ref()).unwrap();
+    pub fn initialize<P: AsRef<Path>>(filename: P) {
+        let conn = Connection::open(filename.as_ref()).expect("initialize sqlite");
 
         conn.execute(
             r#"
