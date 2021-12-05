@@ -4,11 +4,11 @@ use structopt::StructOpt;
 
 #[derive(StructOpt, Debug)]
 pub enum Options {
-    #[structopt(name = "init", help = "create an empty repository at the specified path")]
+    #[structopt(name = "init", about = "create an empty repository at the specified path")]
     Init(InitOption),
-    #[structopt(name = "create")]
+    #[structopt(name = "create", about = "autogenerate a new revision file")]
     Create(CreateOption),
-    #[structopt(name = "exec")]
+    #[structopt(name = "exec", about = "execute revision files to a later version")]
     Exec(ExecOption),
 }
 
