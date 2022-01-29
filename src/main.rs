@@ -3,13 +3,13 @@ use log::LevelFilter::Trace;
 use simplelog::{ColorChoice, Config, TermLogger, TerminalMode};
 
 use crate::cli::{Cli, SubCommands};
-use crate::error::Result;
 
 pub mod cli;
 pub mod commands;
 pub mod config;
-pub mod error;
 pub mod repository;
+
+pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
 pub fn main() {
     TermLogger::init(Trace, Config::default(), TerminalMode::Mixed, ColorChoice::Auto).unwrap();

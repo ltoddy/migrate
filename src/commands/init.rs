@@ -1,9 +1,11 @@
 use std::fs;
 
+use configit::Storage;
+
 use crate::cli::InitArgs;
 use crate::config::{Config, MySQLConfig};
-use crate::error::Result;
 use crate::repository::Repository;
+use crate::Result;
 
 pub fn init(args: InitArgs) -> Result<()> {
     let directory = args.repository;
@@ -21,7 +23,7 @@ pub fn init(args: InitArgs) -> Result<()> {
         args.mysql_password,
         args.mysql_db,
     );
-    Config::new(directory, mysql).save()?;
+    Config::new(directory, mysql).store(Config::FILENAME)?;
 
     Ok(())
 }

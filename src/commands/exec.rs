@@ -1,14 +1,15 @@
 use std::fs::{self};
 
+use configit::Loader;
 use mysql::prelude::*;
 use mysql::{Opts, Pool};
 
 use crate::cli::ExecArgs;
 use crate::config::Config;
-use crate::error::Result;
+use crate::Result;
 
 pub fn exec(args: ExecArgs) -> Result<()> {
-    let config = Config::load_or_default();
+    let config = Config::load(Config::FILENAME).unwrap_or_default();
 
     let url = config.mysql.get_url();
     let opts = Opts::from_url(&url).expect("wrong mysql config");
