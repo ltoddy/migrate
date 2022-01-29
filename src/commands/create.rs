@@ -1,11 +1,11 @@
 use std::fs;
 
+use crate::cli::CreateArgs;
 use crate::config::Config;
 use crate::error::Result;
-use crate::options::CreateOption;
 
-pub fn create(opt: CreateOption) -> Result<()> {
-    let CreateOption { message } = opt;
+pub fn create(args: CreateArgs) -> Result<()> {
+    let CreateArgs { message } = args;
 
     let config = Config::load_or_default();
     let now = now();

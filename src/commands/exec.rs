@@ -3,11 +3,11 @@ use std::fs::{self};
 use mysql::prelude::*;
 use mysql::{Opts, Pool};
 
+use crate::cli::ExecArgs;
 use crate::config::Config;
 use crate::error::Result;
-use crate::options::ExecOption;
 
-pub fn exec(opt: ExecOption) -> Result<()> {
+pub fn exec(args: ExecArgs) -> Result<()> {
     let config = Config::load_or_default();
 
     let url = config.mysql.get_url();
@@ -34,7 +34,7 @@ pub fn exec(opt: ExecOption) -> Result<()> {
                     if let Err(e) = conn.query_drop(sql) {
                         log::error!("{}", e);
                         log::error!("\n{}", sql);
-                        if !opt.ignore {
+                        if !args.ignore {
                             break;
                         }
                     }
